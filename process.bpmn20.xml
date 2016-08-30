@@ -33,7 +33,7 @@ def token = ['bash', '-c', "curl -X POST -k -u \"todomsgUATAuth:pass1234\" -d \"
 def slurper = new groovy.json.JsonSlurper();
 def tokenresult = slurper.parseText(token.text);
 println tokenresult;
-def todo = ['bash', '-c', "curl -X POST -k -H \"Authorization:Bearer ${tokenresult.access_token}\" -d \"task=${task.name}&ownedBy=${task.getVariable('createdBy')}&url=${url}&taskId=${task.id}&procInsId=${task.getProcessInstanceId()}&procCreateDate=${task.getVariable('createdAt')}&dateStart=${task.getCreateTime()}&type=activiti\" ${todoAPI}"].execute();
+def todo = ['bash', '-c', "curl -X POST -k -H \"Authorization:Bearer ${tokenresult.access_token}\" -d \"task=${task.name}&ownedBy=${task.getVariable('createdBy')}&url=${url}&taskId=${task.id}&procInsId=${task.getProcessInstanceId()}&procCreateDate=${task.getVariable('createdAt').format('yyyy-MM-dd\'T\'HH:mm:ss.SSS\'Z\'')}&dateStart=${task.getCreateTime().format('yyyy-MM-dd\'T\'HH:mm:ss.SSS\'Z\'')}&type=activiti\" ${todoAPI}"].execute();
 def todoresult = slurper.parseText(todo.text);
 println todoresult;
 todo.waitFor();]]></activiti:string>
@@ -71,7 +71,7 @@ def token = ['bash', '-c', "curl -X POST -k -u \"todomsgUATAuth:pass1234\" -d \"
 def slurper = new groovy.json.JsonSlurper();
 def tokenresult = slurper.parseText(token.text);
 println tokenresult;
-def todo = ['bash', '-c', "curl -X POST -k -H \"Authorization:Bearer ${tokenresult.access_token}\" -d \"task=${task.name}&ownedBy=${task.getVariable('ro')}&url=${url}&taskId=${task.id}&procInsId=${task.getProcessInstanceId()}&procCreateDate=${task.getVariable('createdAt')}&dateStart=${task.getCreateTime()}&type=activiti\" ${todoAPI}"].execute();
+def todo = ['bash', '-c', "curl -X POST -k -H \"Authorization:Bearer ${tokenresult.access_token}\" -d \"task=${task.name}&ownedBy=${task.getVariable('ro')}&url=${url}&taskId=${task.id}&procInsId=${task.getProcessInstanceId()}&procCreateDate=${task.getVariable('createdAt').format('yyyy-MM-dd\'T\'HH:mm:ss.SSS\'Z\'')}&dateStart=${task.getCreateTime().format('yyyy-MM-dd\'T\'HH:mm:ss.SSS\'Z\'')}&type=activiti\" ${todoAPI}"].execute();
 def todoresult = slurper.parseText(todo.text);
 println todoresult;
 todo.waitFor();]]></activiti:string>
@@ -109,7 +109,7 @@ def token = ['bash', '-c', "curl -X POST -k -u \"todomsgUATAuth:pass1234\" -d \"
 def slurper = new groovy.json.JsonSlurper();
 def tokenresult = slurper.parseText(token.text);
 println tokenresult;
-def todo = ['bash', '-c', "curl -X POST -k -H \"Authorization:Bearer ${tokenresult.access_token}\" -d \"task=${task.name}&ownedBy=${task.getVariable('ao')}&url=${url}&taskId=${task.id}&procInsId=${task.getProcessInstanceId()}&procCreateDate=${task.getVariable('createdAt')}&dateStart=${task.getCreateTime()}&type=activiti\" ${todoAPI}"].execute();
+def todo = ['bash', '-c', "curl -X POST -k -H \"Authorization:Bearer ${tokenresult.access_token}\" -d \"task=${task.name}&ownedBy=${task.getVariable('ao')}&url=${url}&taskId=${task.id}&procInsId=${task.getProcessInstanceId()}&procCreateDate=${task.getVariable('createdAt').format('yyyy-MM-dd\'T\'HH:mm:ss.SSS\'Z\'')}&dateStart=${task.getCreateTime().format('yyyy-MM-dd\'T\'HH:mm:ss.SSS\'Z\'')}&type=activiti\" ${todoAPI}"].execute();
 def todoresult = slurper.parseText(todo.text);
 println todoresult;
 todo.waitFor();]]></activiti:string>
