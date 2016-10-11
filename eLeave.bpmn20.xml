@@ -26,8 +26,11 @@
       <extensionElements>
         <activiti:taskListener event="create" class="org.activiti.engine.impl.bpmn.listener.ScriptTaskListener">
           <activiti:field name="script">
-            <activiti:string><![CDATA[def url = 'https://dp2.ogcio.ccgo.hksarg/eleave/elaps/DPEntry/OGCIO';             
-            def todoAPI = 'http://10.30.224.82:8001/api/todo/';             
+            <activiti:string><![CDATA[def url = 'https://dp2.ogcio.ccgo.hksarg/eleave/elaps/DPEntry/OGCIO';     
+       		def orgchartAPI = "http://10.30.224.82:8021/api/user?email=";	
+            def todoAPI = 'http://10.30.224.82:8001/api/todo/';
+            task.setVariable('orgchartAPI',orgchartAPI);
+            task.setVariable('todoAPI',todoAPI); 			
             def token = ['bash', '-c', "curl -X POST -k -u \"todomsgUATAuth:pass1234\" -d \"grant_type=password&username=todoadmin&password=pass1234&scope[]=https://mob.myvnc.com/org/users&scope[]=https://mob.myvnc.com/mobile\" https://mob.myvnc.com/org/oauth2/token/"].execute();             
             def slurper = new groovy.json.JsonSlurper();             
             def tokenresult = slurper.parseText(token.text);             
@@ -43,7 +46,7 @@
         </activiti:taskListener>
         <activiti:taskListener event="complete" class="org.activiti.engine.impl.bpmn.listener.ScriptTaskListener">
           <activiti:field name="script">
-            <activiti:string><![CDATA[def orgchartAPI= "http://10.30.224.82:8021/api/user?email=${completedBy.email}";
+            <activiti:string><![CDATA[def orgchartAPI= "${task.getVariable('orgchartAPI')}${completedBy.email}";
             def myInfo = ['bash', '-c', "curl -X GET -k ${orgchartAPI}"].execute();
             def slurper = new groovy.json.JsonSlurper();
             def me = slurper.parseText(myInfo.text);
@@ -63,7 +66,7 @@
         <activiti:taskListener event="create" class="org.activiti.engine.impl.bpmn.listener.ScriptTaskListener">
           <activiti:field name="script">
             <activiti:string><![CDATA[def url = 'https://dp2.ogcio.ccgo.hksarg/eleave/elaps/DPEntry/OGCIO';             
-            def todoAPI = 'http://10.30.224.82:8001/api/todo/';             
+            def todoAPI = task.getVariable('todoAPI');
             def token = ['bash', '-c', "curl -X POST -k -u \"todomsgUATAuth:pass1234\" -d \"grant_type=password&username=todoadmin&password=pass1234&scope[]=https://mob.myvnc.com/org/users&scope[]=https://mob.myvnc.com/mobile\" https://mob.myvnc.com/org/oauth2/token/"].execute();             
             def slurper = new groovy.json.JsonSlurper();             
             def tokenresult = slurper.parseText(token.text);             
@@ -79,7 +82,7 @@
         </activiti:taskListener>
         <activiti:taskListener event="complete" class="org.activiti.engine.impl.bpmn.listener.ScriptTaskListener">
           <activiti:field name="script">
-            <activiti:string><![CDATA[def orgchartAPI= "http://10.30.224.82:8021/api/user?email=${completedBy.email}";
+            <activiti:string><![CDATA[def orgchartAPI= "${task.getVariable('orgchartAPI')}${completedBy.email}";
             def myInfo = ['bash', '-c', "curl -X GET -k ${orgchartAPI}"].execute();
             def slurper = new groovy.json.JsonSlurper();
             def me = slurper.parseText(myInfo.text);
@@ -99,7 +102,7 @@
         <activiti:taskListener event="create" class="org.activiti.engine.impl.bpmn.listener.ScriptTaskListener">
           <activiti:field name="script">
             <activiti:string><![CDATA[def url = 'https://dp2.ogcio.ccgo.hksarg/eleave/elaps/DPEntry/OGCIO';             
-            def todoAPI = 'http://10.30.224.82:8001/api/todo/';             
+            def todoAPI = task.getVariable('todoAPI'); 
             def token = ['bash', '-c', "curl -X POST -k -u \"todomsgUATAuth:pass1234\" -d \"grant_type=password&username=todoadmin&password=pass1234&scope[]=https://mob.myvnc.com/org/users&scope[]=https://mob.myvnc.com/mobile\" https://mob.myvnc.com/org/oauth2/token/"].execute();             
             def slurper = new groovy.json.JsonSlurper();             
             def tokenresult = slurper.parseText(token.text);             
@@ -126,16 +129,16 @@
     <endEvent id="sid-8EF6BDE6-C9C3-4D36-9AED-D9CCDD23320F"></endEvent>
     <sequenceFlow id="sid-DF16D852-F258-4112-84A1-5A78EF608484" sourceRef="sid-869B30BB-A49C-4392-B00C-ADE8B8C7DB12" targetRef="sid-436CB129-C8F9-4155-8242-5D6A6631B76E"></sequenceFlow>
     <sequenceFlow id="sid-A7402BDC-F004-4441-B6E7-1E76BBE13674" sourceRef="sid-436CB129-C8F9-4155-8242-5D6A6631B76E" targetRef="sid-8323BC35-CB20-4FE3-971B-582727904903"></sequenceFlow>
-    <sequenceFlow id="sid-7DC40A3D-B145-4FD2-AC5B-E4DB65594A57" sourceRef="sid-0C5CA3F3-B619-4B7B-919A-379E9F1403ED" targetRef="sid-8EF6BDE6-C9C3-4D36-9AED-D9CCDD23320F"></sequenceFlow>
     <sequenceFlow id="sid-2DD372CE-5DC0-470A-8E55-CEF97813866D" sourceRef="sid-8323BC35-CB20-4FE3-971B-582727904903" targetRef="sid-0C5CA3F3-B619-4B7B-919A-379E9F1403ED"></sequenceFlow>
+    <sequenceFlow id="sid-7DC40A3D-B145-4FD2-AC5B-E4DB65594A57" sourceRef="sid-0C5CA3F3-B619-4B7B-919A-379E9F1403ED" targetRef="sid-8EF6BDE6-C9C3-4D36-9AED-D9CCDD23320F"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_Collaboration">
     <bpmndi:BPMNPlane bpmnElement="Collaboration" id="BPMNPlane_Collaboration">
       <bpmndi:BPMNShape bpmnElement="sid-B5E7F080-AED4-4CAF-B3EA-A557D071B6CC" id="BPMNShape_sid-B5E7F080-AED4-4CAF-B3EA-A557D071B6CC">
-        <omgdc:Bounds height="379.0" width="380.0" x="51.0" y="8.0"></omgdc:Bounds>
+        <omgdc:Bounds height="336.0" width="381.0" x="51.0" y="8.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="sid-626DDE99-5ABC-43DA-8099-E3635DC3F771" id="BPMNShape_sid-626DDE99-5ABC-43DA-8099-E3635DC3F771">
-        <omgdc:Bounds height="130.0" width="350.0" x="81.0" y="8.0"></omgdc:Bounds>
+        <omgdc:Bounds height="114.0" width="351.0" x="81.0" y="8.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="sid-869B30BB-A49C-4392-B00C-ADE8B8C7DB12" id="BPMNShape_sid-869B30BB-A49C-4392-B00C-ADE8B8C7DB12">
         <omgdc:Bounds height="30.0" width="30.0" x="125.0" y="58.0"></omgdc:Bounds>
@@ -144,19 +147,19 @@
         <omgdc:Bounds height="80.0" width="100.0" x="220.0" y="33.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="sid-51123AEA-092A-4C19-950C-B250218F2DFE" id="BPMNShape_sid-51123AEA-092A-4C19-950C-B250218F2DFE">
-        <omgdc:Bounds height="128.0" width="350.0" x="81.0" y="138.0"></omgdc:Bounds>
+        <omgdc:Bounds height="128.0" width="351.0" x="81.0" y="122.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="sid-8323BC35-CB20-4FE3-971B-582727904903" id="BPMNShape_sid-8323BC35-CB20-4FE3-971B-582727904903">
-        <omgdc:Bounds height="80.0" width="100.0" x="220.0" y="163.0"></omgdc:Bounds>
+        <omgdc:Bounds height="80.0" width="100.0" x="220.0" y="147.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="sid-0CFABA69-A202-443C-95D2-714B64A5871E" id="BPMNShape_sid-0CFABA69-A202-443C-95D2-714B64A5871E">
-        <omgdc:Bounds height="121.0" width="350.0" x="81.0" y="266.0"></omgdc:Bounds>
+        <omgdc:Bounds height="94.0" width="351.0" x="81.0" y="250.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="sid-0C5CA3F3-B619-4B7B-919A-379E9F1403ED" id="BPMNShape_sid-0C5CA3F3-B619-4B7B-919A-379E9F1403ED">
-        <omgdc:Bounds height="80.0" width="100.0" x="223.0" y="291.0"></omgdc:Bounds>
+        <omgdc:Bounds height="80.0" width="100.0" x="223.0" y="255.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="sid-8EF6BDE6-C9C3-4D36-9AED-D9CCDD23320F" id="BPMNShape_sid-8EF6BDE6-C9C3-4D36-9AED-D9CCDD23320F">
-        <omgdc:Bounds height="28.0" width="28.0" x="393.0" y="317.0"></omgdc:Bounds>
+        <omgdc:Bounds height="28.0" width="28.0" x="393.0" y="281.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="sid-DF16D852-F258-4112-84A1-5A78EF608484" id="BPMNEdge_sid-DF16D852-F258-4112-84A1-5A78EF608484">
         <omgdi:waypoint x="155.0" y="73.0"></omgdi:waypoint>
@@ -164,15 +167,15 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="sid-A7402BDC-F004-4441-B6E7-1E76BBE13674" id="BPMNEdge_sid-A7402BDC-F004-4441-B6E7-1E76BBE13674">
         <omgdi:waypoint x="270.0" y="113.0"></omgdi:waypoint>
-        <omgdi:waypoint x="270.0" y="163.0"></omgdi:waypoint>
+        <omgdi:waypoint x="270.0" y="147.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="sid-2DD372CE-5DC0-470A-8E55-CEF97813866D" id="BPMNEdge_sid-2DD372CE-5DC0-470A-8E55-CEF97813866D">
-        <omgdi:waypoint x="270.0" y="243.0"></omgdi:waypoint>
-        <omgdi:waypoint x="270.0" y="291.0"></omgdi:waypoint>
+        <omgdi:waypoint x="271.1111111111111" y="227.0"></omgdi:waypoint>
+        <omgdi:waypoint x="271.8888888888889" y="255.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="sid-7DC40A3D-B145-4FD2-AC5B-E4DB65594A57" id="BPMNEdge_sid-7DC40A3D-B145-4FD2-AC5B-E4DB65594A57">
-        <omgdi:waypoint x="323.0" y="331.0"></omgdi:waypoint>
-        <omgdi:waypoint x="393.0" y="331.0"></omgdi:waypoint>
+        <omgdi:waypoint x="323.0" y="295.0"></omgdi:waypoint>
+        <omgdi:waypoint x="393.0" y="295.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
